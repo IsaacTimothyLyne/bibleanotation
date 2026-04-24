@@ -1,0 +1,125 @@
+erDiagram
+    users {
+        uuid id PK
+        string display_name
+        string email
+        string avatar_url
+        datetime created_at
+    }
+
+    bible_translations {
+        uuid id PK
+        string code
+        string name
+        string language
+        string license
+    }
+
+    bible_books {
+        uuid id PK
+        string osis_code
+        string name
+        string testament
+        int book_order
+    }
+
+    bible_chapters {
+        uuid id PK
+        uuid book_id FK
+        int chapter_number
+    }
+
+    bible_verses {
+        uuid id PK
+        uuid translation_id FK
+        uuid book_id FK
+        uuid chapter_id FK
+        int verse_number
+        text verse_text
+        string reference_key
+    }
+
+    bible_words {
+        uuid id PK
+        uuid verse_id FK
+        int word_index
+        string word_text
+        string normalized_word
+    }
+
+    annotation_targets {
+        uuid id PK
+        string target_type
+        uuid translation_id FK
+        uuid book_id FK
+        uuid chapter_id FK
+        uuid start_verse_id FK
+        uuid end_verse_id FK
+        uuid start_word_id FK
+        uuid end_word_id FK
+        string reference_label
+        string reference_key
+    }
+
+    threads {
+        uuid id PK
+        uuid target_id FK
+        uuid user_id FK
+        string title
+        string visibility
+        string thread_type
+        datetime created_at
+    }
+
+    comments {
+        uuid id PK
+        uuid thread_id FK
+        uuid parent_comment_id FK
+        uuid user_id FK
+        text body
+        boolean is_deleted
+        datetime created_at
+    }
+
+    reactions {
+        uuid id PK
+        uuid user_id FK
+        string entity_type
+        uuid entity_id
+        string reaction_type
+        datetime created_at
+    }
+
+    personal_notes {
+        uuid id PK
+        uuid user_id FK
+        uuid target_id FK
+        text body
+        datetime created_at
+    }
+
+    highlights {
+        uuid id PK
+        uuid user_id FK
+        uuid target_id FK
+        string color
+        datetime created_at
+    }
+
+    bible_translations ||--o{ bible_verses : contains
+    bible_books ||--o{ bible_chapters : contains
+    bible_chapters ||--o{ bible_verses : contains
+    bible_verses ||--o{ bible_words : contains
+
+    annotation_targets ||--o{ threads : has
+    threads ||--o{ comments : contains
+    comments ||--o{ comments : replies_to
+
+    users ||--o{ threads : creates
+    users ||--o{ comments : writes
+    users ||--o{ reactions : gives
+    users ||--o{ personal_notes : writes
+    users ||--o{ highlights : creates
+
+    annotation_targets ||--o{ personal_notes : attached_to
+    annotation_targets ||--o{ highlights : attached_to
