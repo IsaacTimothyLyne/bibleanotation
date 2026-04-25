@@ -1,10 +1,14 @@
 <?php
 
-use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 Route::get('/', function () {
     return Inertia::render('Home');
 });
 
-Route::get('/login', [\App\Http\Controllers\LoginController::class, 'index'])->name('login');
+Route::middleware('auth')->group(function () {
+    Route::get('/settings/security', function () {
+        return Inertia::render('Auth/Security');
+    })->name('settings.security');
+});

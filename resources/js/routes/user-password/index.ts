@@ -1,9 +1,9 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition } from './../../wayfinder'
 /**
 * @see \Laravel\Fortify\Http\Controllers\PasswordController::update
- * @see vendor/laravel/fortify/src/Http/Controllers/PasswordController.php:22
- * @route '/user/password'
- */
+* @see vendor/laravel/fortify/src/Http/Controllers/PasswordController.php:22
+* @route '/user/password'
+*/
 export const update = (options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(options),
     method: 'put',
@@ -16,22 +16,23 @@ update.definition = {
 
 /**
 * @see \Laravel\Fortify\Http\Controllers\PasswordController::update
- * @see vendor/laravel/fortify/src/Http/Controllers/PasswordController.php:22
- * @route '/user/password'
- */
+* @see vendor/laravel/fortify/src/Http/Controllers/PasswordController.php:22
+* @route '/user/password'
+*/
 update.url = (options?: RouteQueryOptions) => {
     return update.definition.url + queryParams(options)
 }
 
 /**
 * @see \Laravel\Fortify\Http\Controllers\PasswordController::update
- * @see vendor/laravel/fortify/src/Http/Controllers/PasswordController.php:22
- * @route '/user/password'
- */
+* @see vendor/laravel/fortify/src/Http/Controllers/PasswordController.php:22
+* @route '/user/password'
+*/
 update.put = (options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(options),
     method: 'put',
 })
+
 const userPassword = {
     update: Object.assign(update, update),
 }

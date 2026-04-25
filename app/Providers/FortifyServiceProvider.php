@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
 use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
 use Laravel\Fortify\Fortify;
 
@@ -29,6 +30,19 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Fortify::loginView(fn () => Inertia::render('Auth/Login'));
+        Fortify::registerView(fn () => Inertia::render('Auth/Register'));
+        Fortify::requestPasswordResetLinkView(fn () => Inertia::render('Auth/ForgotPassword'));
+        Fortify::resetPasswordView(function (Request $request) {
+            return Inertia::render('Auth/ResetPassword', [
+                'email' => $request->string('email')->toString(),
+                'token' => $request->route('token'),
+            ]);
+        });
+        Fortify::verifyEmailView(fn () => Inertia::render('Auth/VerifyEmail'));
+        Fortify::confirmPasswordView(fn () => Inertia::render('Auth/ConfirmPassword'));
+        Fortify::twoFactorChallengeView(fn () => Inertia::render('Auth/TwoFactorChallenge'));
+
         Fortify::createUsersUsing(CreateNewUser::class);
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
