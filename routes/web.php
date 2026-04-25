@@ -11,4 +11,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/settings/security', function () {
         return Inertia::render('Auth/Security');
     })->name('settings.security');
+    Route::get('/bible', function () {
+        return Inertia::render('Bible');
+    })->name('bible.index');
 });
